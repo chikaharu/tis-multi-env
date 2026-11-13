@@ -1,0 +1,154 @@
+; TIS v1 -- Texectum instruction set, from Perl source: examples/perl/demo.pl
+; one register = one 1x1 Link:  %t = F( %x ; %s )
+%t1 = const 3
+store x, %t1
+%t2 = const 2
+store w, %t2
+%t3 = var x
+%t4 = aff %t3, 8, 7
+store y, %t4
+print_str "y = "
+%t5 = var y
+print_val %t5
+print_str "\n"
+%t6 = var x
+%t7 = var w
+%t8 = mul %t6 ; %t7
+%t9 = var y
+%t10 = var w
+%t11 = mul %t9 ; %t10
+%t12 = add %t8 ; %t11
+store z, %t12
+print_str "z = "
+%t13 = var z
+print_val %t13
+print_str "\n"
+print_str "sqrt chain = "
+%t14 = const 13
+print_val %t14
+print_str "\n"
+%t15 = const 0
+store s, %t15
+%t16 = const 1
+store __rng1_lo, %t16
+%t17 = const 100
+store __rng1_hi, %t17
+%t18 = var __rng1_lo
+store i, %t18
+L2:
+%t19 = var i
+%t20 = var __rng1_hi
+%t21 = cmp <=, %t19 ; %t20
+jz %t21, L4
+%t22 = var s
+%t23 = var i
+%t24 = add %t22 ; %t23
+store s, %t24
+L3:
+%t25 = var i
+%t26 = aff %t25, 1, 1
+store i, %t26
+jmp L2
+L4:
+print_str "sum 1..100 = "
+%t27 = var s
+print_val %t27
+print_str "\n"
+%t28 = const 1
+store f, %t28
+%t29 = const 1
+store i, %t29
+L5:
+%t30 = var i
+%t31 = const 11
+%t32 = cmp <, %t30 ; %t31
+jz %t32, L7
+%t33 = var f
+%t34 = var i
+%t35 = mul %t33 ; %t34
+store f, %t35
+L6:
+%t36 = var i
+%t37 = aff %t36, 1, 1
+store i, %t37
+jmp L5
+L7:
+print_str "10! = "
+%t38 = var f
+print_val %t38
+print_str "\n"
+%t39 = const 0
+store a, %t39
+%t40 = const 1
+store b, %t40
+%t41 = const 1
+store __rng8_lo, %t41
+%t42 = const 20
+store __rng8_hi, %t42
+%t43 = var __rng8_lo
+store i, %t43
+L9:
+%t44 = var i
+%t45 = var __rng8_hi
+%t46 = cmp <=, %t44 ; %t45
+jz %t46, L11
+%t47 = var a
+%t48 = var b
+%t49 = add %t47 ; %t48
+store t, %t49
+%t50 = var b
+store a, %t50
+%t51 = var t
+store b, %t51
+L10:
+%t52 = var i
+%t53 = aff %t52, 1, 1
+store i, %t53
+jmp L9
+L11:
+print_str "fib(20) = "
+%t54 = var a
+print_val %t54
+print_str "\n"
+print_str "100/7 = "
+%t55 = const 14
+print_val %t55
+print_str "\n"
+print_str "100 mod 7 = "
+%t56 = const 100
+%t57 = const 7
+%t58 = mod %t56 ; %t57
+print_val %t58
+print_str "\n"
+print_str "negative = "
+%t59 = const -12345
+print_val %t59
+print_str "\n"
+%t60 = const 0
+store k, %t60
+L12:
+%t61 = var k
+%t62 = const 3
+%t63 = cmp <, %t61 ; %t62
+jz %t63, L13
+%t64 = var k
+%t65 = aff %t64, 1, 1
+store k, %t65
+jmp L12
+L13:
+print_str "while k = "
+%t66 = var k
+print_val %t66
+print_str "\n"
+%t67 = const 15
+%t68 = const 15
+%t69 = mod %t67 ; %t68
+%t70 = const 0
+%t71 = cmp ==, %t69 ; %t70
+jz %t71, L14
+print_str "15 is divisible by 15\n"
+jmp L15
+L14:
+print_str "unreachable\n"
+L15:
+halt

@@ -1,0 +1,19 @@
+; TIS v1 -- from [a:c:b] source demo2.c3, topologically compiled
+%t1 = const 123
+store x, %t1
+%t2 = const 456
+store y, %t2
+%t3 = var x
+%t4 = var y
+%t5 = mul %t3 ; %t4
+store p, %t5
+%t6 = const 789
+store z, %t6
+%t7 = var p
+%t8 = var z
+%t9 = add %t7 ; %t8
+store ans, %t9
+%t10 = var ans
+print_val %t10
+print_str "\n"
+halt

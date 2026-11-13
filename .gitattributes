@@ -1,0 +1,6 @@
+*.tis text eol=lf
+*.txt text eol=lf
+*.out text eol=lf
+*.py text eol=lf
+*.pl text eol=lf
+*.elf binary

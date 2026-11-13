@@ -1,0 +1,41 @@
+; TIS v1 -- Texectum instruction set, from Perl source: examples/perl/streamsum.pl
+; one register = one 1x1 Link:  %t = F( %x ; %s )
+%t1 = const 0
+store n, %t1
+%t2 = const 0
+store s, %t2
+%t3 = const 0
+store sq, %t3
+L1:
+%t4 = read_eof
+%t5 = const 0
+%t6 = cmp ==, %t4 ; %t5
+jz %t6, L2
+%t7 = read_int
+store v, %t7
+%t8 = var n
+%t9 = aff %t8, 1, 1
+store n, %t9
+%t10 = var s
+%t11 = var v
+%t12 = add %t10 ; %t11
+store s, %t12
+%t13 = var sq
+%t14 = var v
+%t15 = var v
+%t16 = mul %t14 ; %t15
+%t17 = add %t13 ; %t16
+store sq, %t17
+jmp L1
+L2:
+print_str "n="
+%t18 = var n
+print_val %t18
+print_str " sum="
+%t19 = var s
+print_val %t19
+print_str " sumsq="
+%t20 = var sq
+print_val %t20
+print_str "\n"
+halt
