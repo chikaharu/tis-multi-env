@@ -1,0 +1,29 @@
+name: tis-multi-env
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  tis:
+    name: tis on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run TIS cases on both executors
+        run: python ci/run_tis.py
+      - name: Native ELF boundary check (informational)
+        if: runner.os == 'Linux'
+        continue-on-error: true
+        shell: bash
+        run: |
+          chmod +x native/demo2.elf
+          echo "arch: $(uname -m)"
+          ./native/demo2.elf || echo "ELF did not run on this leg (expected unless Linux x86_64)"
