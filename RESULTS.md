@@ -24,4 +24,34 @@ re-implementing 25 instruction forms plus a thin driver per land.
 
 ## Results
 
-(to be filled from the Actions run)
+Actions run 43530747178 (push of the workflow commit itself):
+all 4 jobs success.
+
+| Leg | Platform | Python executor | Perl executor | Cross-check |
+|---|---|---|---|---|
+| ubuntu-latest | Linux x86_64 | PASS 3/3 | PASS 3/3 (/usr/bin/perl) | PASS |
+| ubuntu-24.04-arm | Linux aarch64 | PASS 3/3 | PASS 3/3 (/usr/bin/perl) | PASS |
+| macos-latest | Darwin arm64 | PASS 3/3 | PASS 3/3 (Homebrew perl) | PASS |
+| windows-latest | Windows AMD64 | PASS 3/3 | PASS-CRLF 3/3 (Strawberry Perl) | PASS |
+
+- P1 PASS, P2 PASS (with exactly the predicted CRLF exception):
+  on Windows, tisrun output differs from golden only by CRLF
+  translation of newlines (demo2 7B vs 6B, demo 165B vs 154B,
+  streamsum 35B vs 34B — the deltas are exactly the newline counts).
+  Semantics identical; the difference is the platform text layer.
+- P3 PASS: cross-executor check passed on every leg.
+- P4 PASS: native/demo2.elf (1,724B, Linux x86_64 ELF) printed 56877
+  on the Linux x86_64 leg only; on the ARM64 Linux leg it did not run;
+  the step is skipped on macOS/Windows legs.
+
+## Reading
+
+TIS itself crossed OS and CPU boundaries untouched: the same three
+listings produced byte-identical output on Linux x86_64, Linux ARM64,
+macOS ARM64 and Windows x64, under two independent executors.
+The only crack appeared exactly where predicted — not in TIS
+semantics but in the Windows text layer's CRLF translation, i.e. in
+the host's stdout plumbing, which the Perl executor inherits and the
+Python executor (writing to a pipe it controls) does not.
+The native ELF, by contrast, stayed home: one leg out of four.
+Portability lives in the paper (the listing), not in the binary.
