@@ -19,6 +19,8 @@ jobs:
           python-version: "3.12"
       - name: Run TIS cases on both executors
         run: python ci/run_tis.py
+      - name: Run LOL checks
+        run: python ci/run_lol.py
       - name: Native ELF boundary check (informational)
         if: runner.os == 'Linux'
         continue-on-error: true
